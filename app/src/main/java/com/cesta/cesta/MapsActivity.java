@@ -47,6 +47,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "MapsActivity";
     private static final int MY_LOCATION_REQUEST_CODE = 0x21;
+    private static final int PROFILE_REQUEST_CODE = 0x013;
     Marker userLocMarker;
     //private static final int MY_LOCATION_REQUEST_CODE2 = 0x22;
     private SupportMapFragment mapFragment;
@@ -72,8 +73,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.clear();
             Marker mMarker = map.addMarker(new MarkerOptions().position(loc).title("GET RIDES " +
                     "FROM HERE").snippet("This is a snippet"));
-            Circle circle = map.addCircle(new CircleOptions().center(loc).radius(50).fillColor
-                    (Color.TRANSPARENT).strokeWidth(1).strokeColor(Color.GREEN));
+            Circle circle = map.addCircle(new CircleOptions().center(loc).radius(150).fillColor
+                    (Color.TRANSPARENT).strokeWidth(2).strokeColor(Color.BLUE));
 
             if (map != null) {
                 //map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18.0f));
@@ -88,6 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView name;
     private TextView email;
     private ImageView profileImage;
+    private View navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,34 +97,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.drawer_layout);
 
         account = (Account) getIntent().getSerializableExtra("ac");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (account != null) {
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-            name = (TextView) navView.findViewById(R.id.name_nav);
-            if (name != null) {
-                name.setText(account.getName());
-            } else
-                Log.e(TAG, "onCreate: name is null");
-            email = (TextView) navView.findViewById(R.id.email_nav);
-            if (email != null) {
-                email.setText(account.getEmail());
-            } else
-                Log.e(TAG, "onCreate: email is null");
-
-            profilePic = BitmapFactory.decodeFile(account.getImagePath());
-            profileImage = (ImageView) navView.findViewById(R.id.profile_pic_nav);
-            if (profileImage != null) {
-                profileImage.setImageBitmap(profilePic);
-            } else
-                Log.e(TAG, "onCreate: profileImage is null");
-        }
+            setNavigationHeader(navigationView);
+        } else
+            Log.e(TAG, "onCreate: Null account");
 
         final Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(actionBar);
-        //getSupportActionBar().show();
-        /*getSupportActionBar().show();
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
 
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
@@ -166,7 +148,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         };
         drawerLayout.setDrawerListener(drawerToggle);
 
-        ((NavigationView) findViewById(R.id.nav_view)).setNavigationItemSelectedListener(
+        navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -208,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 transaction.commit();*/
                                 Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
                                 intent.putExtra("ac", account);
-                                startActivity(intent);
+                                startActivityForResult(intent, PROFILE_REQUEST_CODE);
                                 break;
                         }
                         drawerLayout.closeDrawers();
@@ -240,6 +222,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_LOCATION_REQUEST_CODE);
         }
+    }
+
+    private void setNavigationHeader(NavigationView navigationView) {
+        if (navigationView != null) {
+            account = (Account) getIntent().getSerializableExtra("ac");
+            if (navView != null) {
+                navigationView.removeHeaderView(navView);
+            }
+            navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+            name = (TextView) navView.findViewById(R.id.name_nav);
+            if (name != null) {
+                name.setText(account.getName());
+            } else
+                Log.e(TAG, "onCreate: name is null");
+            email = (TextView) navView.findViewById(R.id.email_nav);
+            if (email != null) {
+                email.setText(account.getEmail());
+            } else
+                Log.e(TAG, "onCreate: email is null");
+
+            if (profilePic != null) {
+                profilePic = BitmapFactory.decodeFile(account.getImagePath());
+            }
+            profileImage = (ImageView) navView.findViewById(R.id.profile_pic_nav);
+            if (profileImage != null) {
+                profileImage.setImageBitmap(profilePic);
+            } else
+                Log.e(TAG, "onCreate: profileImage is null");
+        } else
+            Log.e(TAG, "setNavigationHeader: Null navigation view");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setNavigationHeader(navigationView);
     }
 
     private void showDialogBox() {
@@ -300,10 +319,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+        // Move the camera to Bangalore.
+        LatLng bangalore = new LatLng(12.9667, 77.5667);
+        //map.addMarker(new MarkerOptions().position(bangalore).title("Marker in Sydney"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
     }
 
     @Override
@@ -348,6 +367,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setNavigationHeader(navigationView);
+        navigationView.setCheckedItem(R.id.map_item);
     }
 
     /* Facebook App Tracking
