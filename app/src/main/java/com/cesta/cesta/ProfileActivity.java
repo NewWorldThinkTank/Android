@@ -37,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         account = (Account) getIntent().getSerializableExtra("ac");
+        Log.d(TAG, "onCreate: account = " + account);
         final Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(actionBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,9 +111,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GOOGLE_SIGN_OUT) {
             if (resultCode == RESULT_OK) {
-                SharedPreferences p = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+                SharedPreferences p = getSharedPreferences(SignUpActivity.PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = p.edit();
-                editor.putBoolean(MainActivity.SIGNED_IN, false);
+                editor.putBoolean(SignUpActivity.SIGNED_IN, false);
                 editor.apply();
 
                 Toast.makeText(this, "Log out successful.", Toast.LENGTH_SHORT).show();
@@ -121,9 +122,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         } else if (requestCode == REQUEST_CODE_FB_LOG_OUT) {
             if (resultCode == RESULT_OK) {
-                SharedPreferences p = getSharedPreferences(MainActivity.PREF, Context.MODE_PRIVATE);
+                SharedPreferences p = getSharedPreferences(SignUpActivity.PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = p.edit();
-                editor.putBoolean(MainActivity.SIGNED_IN, false);
+                editor.putBoolean(SignUpActivity.SIGNED_IN, false);
                 editor.apply();
 
                 Toast.makeText(this, "Log out successful.", Toast.LENGTH_SHORT).show();

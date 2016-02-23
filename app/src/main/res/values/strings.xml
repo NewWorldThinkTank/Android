@@ -32,4 +32,9 @@
         <item>Custom</item>
     </string-array>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="text_register">Register</string>
+    <string name="different_login">OR</string>
 </resources>

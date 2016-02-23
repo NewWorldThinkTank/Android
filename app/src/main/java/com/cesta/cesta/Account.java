@@ -130,7 +130,7 @@ public class Account implements Serializable {
                         e1.printStackTrace();
                     }
                 }
-                String pathS = directory.getAbsolutePath();
+                String pathS = path.getAbsolutePath();
                 Account.this.setImagePath(pathS);
             }
         }.execute(path);

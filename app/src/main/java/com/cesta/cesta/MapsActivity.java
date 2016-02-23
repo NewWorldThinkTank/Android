@@ -94,7 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.drawer_layout);
+        setContentView(R.layout.activity_maps);
 
         account = (Account) getIntent().getSerializableExtra("ac");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -190,6 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 transaction.commit();*/
                                 Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
                                 intent.putExtra("ac", account);
+                                Log.d(TAG, "onNavigationItemSelected: ac = " + account);
                                 startActivityForResult(intent, PROFILE_REQUEST_CODE);
                                 break;
                         }
