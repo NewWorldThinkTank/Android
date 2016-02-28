@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,7 +92,7 @@ public class Account implements Serializable {
         this.p = p;
     }
 
-    public void downloadImage(final Context c, String path) {
+    public void downloadImage(final Context c, String path, final Callback cb) {
         new AsyncTask<String, Void, Bitmap>() {
 
             public static final String TAG = "Account: AsyncTask";
@@ -121,6 +123,10 @@ public class Account implements Serializable {
                     fos = new FileOutputStream(path);
                     // Use the compress method on the BitMap object to write image to the OutputStream
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    String pathS = path.getAbsolutePath();
+                    Account.this.setImagePath(directory.getAbsolutePath());
+                    Log.d(TAG, "onPostExecute: File saved as " + pathS);
+                    cb.call();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -130,13 +136,26 @@ public class Account implements Serializable {
                         e1.printStackTrace();
                     }
                 }
-                String pathS = path.getAbsolutePath();
-                Account.this.setImagePath(pathS);
             }
         }.execute(path);
     }
 
+    public Bitmap getImage(Context c) {
+        try {
+            File f=new File(getImagePath(), "profile.png");
+            return BitmapFactory.decodeStream(new FileInputStream(f));
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return BitmapFactory.decodeResource(c.getResources(), R.drawable.some_cesta);
+    }
+
     enum Type {
         FaceBook, Google;
+    }
+
+    static interface Callback {
+        void call();
     }
 }

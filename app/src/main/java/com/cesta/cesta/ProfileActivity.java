@@ -41,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         final Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(actionBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.d(TAG, "onCreate: toolbar height = " + actionBar.getHeight());
 
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.my_recycler_view);
 
@@ -51,11 +52,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                Log.d(TAG, "onScrollStateChanged: newState = " + newState);
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "onScrolled: dx = " + dx + ", dy = " + dy);
             }
         });
 
@@ -87,23 +90,24 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });*/
 
-        TextView name = (TextView) findViewById(R.id.name);
+        /*TextView name = (TextView) findViewById(R.id.name_tv);
         if (name != null) {
             name.setText(account.getName());
         } else
             Log.e(TAG, "onCreate: name is null");
-        TextView email = (TextView) findViewById(R.id.email_nav);
+        TextView email = (TextView) findViewById(R.id.email_tv);
         if (email != null) {
             email.setText(account.getEmail());
         } else
             Log.e(TAG, "onCreate: email is null");
 
+        Log.d(TAG, "onCreate: path" + account.getImagePath());
         Bitmap profilePic = BitmapFactory.decodeFile(account.getImagePath());
-        ImageView profileImage = (ImageView) findViewById(R.id.profile_pic_nav);
+        ImageView profileImage = (ImageView) findViewById(R.id.profile_pic_iv);
         if (profileImage != null) {
             profileImage.setImageBitmap(profilePic);
         } else
-            Log.e(TAG, "onCreate: profileImage is null");
+            Log.e(TAG, "onCreate: profileImage is null");*/
     }
 
     @Override
@@ -167,7 +171,35 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            ImageView profile = (ImageView) holder.c.findViewById(R.id.profile_pic);
+            //ImageView profile = (ImageView) holder.c.findViewById(R.id.profile_pic);
+
+            if (account != null) {
+                TextView name = (TextView) holder.c.findViewById(R.id.name_tv);
+                if (name != null) {
+                    name.setText(account.getName());
+                } else
+                    Log.e(TAG, "onCreate: name is null");
+                TextView email = (TextView) holder.c.findViewById(R.id.email_tv);
+                if (email != null) {
+                    email.setText(account.getEmail());
+                } else
+                    Log.e(TAG, "onCreate: email is null");
+
+                Log.d(TAG, "onCreate: path = " + account.getImagePath());
+
+                ImageView profileActB = (ImageView) findViewById(R.id.profile_image_actb);
+                if (profileActB != null) {
+                    profileActB.setImageBitmap(account.getImage(ProfileActivity.this));
+                } else
+                    Log.e(TAG, "onCreate: profileActB is null");
+
+                /*ImageView profileImage = (ImageView) holder.c.findViewById(R.id.profile_pic_iv);
+                if (profileImage != null) {
+                    profileImage.setImageBitmap(account.getImage(ProfileActivity.this));
+                } else
+                    Log.e(TAG, "onCreate: profileImage is null");*/
+            } else
+                Log.e(TAG, "onBindViewHolder: Account is null");
         }
 
         @Override

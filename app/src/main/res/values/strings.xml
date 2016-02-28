@@ -37,4 +37,5 @@
     <string name="prompt_password">Password</string>
     <string name="text_register">Register</string>
     <string name="different_login">OR</string>
+    <string name="pro_pic_st">Profile picture.</string>
 </resources>

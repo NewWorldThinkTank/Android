@@ -60,6 +60,7 @@ public class GoogleSignActivity extends AppCompatActivity implements
     /* Keys for persisting instance variables in savedInstanceState */
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
+    private static final int PROFILE_PIC_SIZE = 400;
     /* Client for accessing Google APIs */
     private GoogleApiClient mGoogleApiClient;
     // [START resolution_variables]
@@ -286,62 +287,27 @@ public class GoogleSignActivity extends AppCompatActivity implements
                     finish();*//*
                     //((MainActivity) this).openMap(new MapFragment());
                 }*/
-                Intent i = new Intent();
+                final Intent i = new Intent();
                 final Account a = new Account(Account.Type.Google);
                 a.setName(currentPerson.getDisplayName());
                 a.setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
 
-                new AsyncTask<String, Void, Bitmap>() {
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                personPhotoUrl = personPhotoUrl.substring(0, personPhotoUrl.length() - 2)
+                        + PROFILE_PIC_SIZE;     // Default size is 50x50. Change it to 400x400
 
+                a.downloadImage(this, personPhotoUrl, new Account.Callback() {
                     @Override
-                    protected Bitmap doInBackground(String... params) {
-
-                        try {
-                            URL url = new URL(params[0]);
-                            InputStream in = url.openStream();
-                            return BitmapFactory.decodeStream(in);
-                        } catch (Exception e) {
-                            Log.w(TAG, "Error getting image");
+                    public void call() {
+                        i.putExtra("Ac", a);
+                        i.putExtra(LOGGED, RESULT_CODE_LOGGED_IN);
+                        setResult(RESULT_OK, i);
+                        if (dialog != null) {
+                            dialog.dismiss();
                         }
-                        return null;
+                        finish();
                     }
-
-                    @Override
-                    protected void onPostExecute(Bitmap bitmap) {
-                        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-                        // path to /data/data/yourapp/app_data/imageDir
-                        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-                        // Create imageDir
-                        File mypath = new File(directory, "profile.png");
-
-                        FileOutputStream fos = null;
-                        try {
-                            fos = new FileOutputStream(mypath);
-                            // Use the compress method on the BitMap object to write image to the OutputStream
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                            Log.d(TAG, "onPostExecute: File saved as " + mypath.getAbsolutePath());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.e(TAG, "onPostExecute: Unable to get the files");
-                        } finally {
-                            try {
-                                fos.close();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                        String path = directory.getAbsolutePath();
-                        a.setImagePath(path);
-                    }
-                }.execute(currentPerson.getImage().getUrl());
-
-                i.putExtra("Ac", a);
-                i.putExtra(LOGGED, RESULT_CODE_LOGGED_IN);
-                setResult(RESULT_OK, i);
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-                finish();
+                });
             } else
                 Log.w(TAG, "showSignedInUI: Got a null person");
         } else

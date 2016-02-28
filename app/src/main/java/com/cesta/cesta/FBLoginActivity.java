@@ -69,7 +69,12 @@ public class FBLoginActivity extends AppCompatActivity {
 
                             a.setName(profile2.getName());
                             a.downloadImage(getApplicationContext(),
-                                    profile2.getProfilePictureUri(400, 400).getPath());
+                                    profile2.getProfilePictureUri(400, 400).getPath(), new Account.Callback() {
+                                        @Override
+                                        public void call() {
+                                            startGraph(loginResult, a);
+                                        }
+                                    });
 
 							/*i.putExtra("Ac", a);
                             i.putExtra(LOGGED, RESULT_CODE_LOGGED_IN);
@@ -78,7 +83,7 @@ public class FBLoginActivity extends AppCompatActivity {
 								finish();
 							} else
 								Log.d(TAG, "onCurrentProfileChanged: Waiting for email.");*/
-                            startGraph(loginResult, a);
+                            /*startGraph(loginResult, a);*/
                         }
                     };
                     mProfileTracker.startTracking();
@@ -90,11 +95,16 @@ public class FBLoginActivity extends AppCompatActivity {
 
                     a.setName(full_name);
                     a.downloadImage(getApplicationContext(),
-                            profile.getProfilePictureUri(400, 400).getPath());
+                            profile.getProfilePictureUri(400, 400).getPath(), new Account.Callback() {
+                                @Override
+                                public void call() {
+                                    startGraph(loginResult, a);
+                                }
+                            });
 
 					/*i.putExtra("Ac", a);
 					i.putExtra(LOGGED, RESULT_CODE_LOGGED_IN);*/
-                    startGraph(loginResult, a);
+                    /*startGraph(loginResult, a);*/
                 }
             }
 

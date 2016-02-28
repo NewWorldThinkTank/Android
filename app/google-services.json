@@ -1,53 +1,13 @@
 {
   "project_info": {
-    "project_id": "cesta-1",
-    "project_number": "638384476598",
-    "name": "cesta"
+    "project_id": "cesta-1170",
+    "project_number": "513526208584",
+    "name": "Cesta"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:638384476598:android:a4687db758adee52",
-        "client_id": "android:com.pheah.pheah_android",
-        "client_type": 1,
-        "android_client_info": {
-          "package_name": "com.pheah.pheah_android"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "638384476598-n9delsjna253e3qc364ajj04abl088r8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pheah.pheah_android",
-            "certificate_hash": "EDC464CAA7B1C90885EB98D808A57A63CB31E5A6"
-          }
-        }
-      ],
-      "api_key": [],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "cloud_messaging_service": {
-          "status": 1,
-          "apns_config": []
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 2
-        },
-        "ads_service": {
-          "status": 1
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:638384476598:android:b2d47491cbd1afb5",
+        "mobilesdk_app_id": "1:513526208584:android:b2d47491cbd1afb5",
         "client_id": "android:com.cesta.cesta",
         "client_type": 1,
         "android_client_info": {
@@ -56,12 +16,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "638384476598-5rmn6j2ucppsqh26rlgbtah2ff9voqrj.apps.googleusercontent.com",
+          "client_id": "513526208584-744elbrlmppd6qsheh6mjtgkiji8er6j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cesta.cesta",
-            "certificate_hash": "EDC464CAA7B1C90885EB98D808A57A63CB31E5A6"
+            "certificate_hash": "70ED0B6D1A405B1E5DDE71B23980EC34473FEEA6"
           }
+        },
+        {
+          "client_id": "513526208584-jstfhuvslm1d9qt49p49gks7g9h4ht7f.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [],
@@ -75,7 +39,12 @@
         },
         "appinvite_service": {
           "status": 2,
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513526208584-jstfhuvslm1d9qt49p49gks7g9h4ht7f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "google_signin_service": {
           "status": 2

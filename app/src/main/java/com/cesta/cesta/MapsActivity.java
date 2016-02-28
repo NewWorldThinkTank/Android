@@ -232,25 +232,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 navigationView.removeHeaderView(navView);
             }
             navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-            name = (TextView) navView.findViewById(R.id.name_nav);
-            if (name != null) {
-                name.setText(account.getName());
-            } else
-                Log.e(TAG, "onCreate: name is null");
-            email = (TextView) navView.findViewById(R.id.email_nav);
-            if (email != null) {
-                email.setText(account.getEmail());
-            } else
-                Log.e(TAG, "onCreate: email is null");
+            if (account != null) {
+                name = (TextView) navView.findViewById(R.id.name_nav);
+                if (name != null) {
+                    name.setText(account.getName());
+                } else
+                    Log.e(TAG, "onCreate: name is null");
+                email = (TextView) navView.findViewById(R.id.email_nav);
+                if (email != null) {
+                    email.setText(account.getEmail());
+                } else
+                    Log.e(TAG, "onCreate: email is null");
 
-            if (profilePic != null) {
-                profilePic = BitmapFactory.decodeFile(account.getImagePath());
-            }
-            profileImage = (ImageView) navView.findViewById(R.id.profile_pic_nav);
-            if (profileImage != null) {
-                profileImage.setImageBitmap(profilePic);
+                if (profilePic != null) {
+                    profilePic = BitmapFactory.decodeFile(account.getImagePath());
+                }
+                profileImage = (ImageView) navView.findViewById(R.id.profile_pic_nav);
+                if (profileImage != null) {
+                    profileImage.setImageBitmap(profilePic);
+                } else
+                    Log.e(TAG, "onCreate: profileImage is null");
             } else
-                Log.e(TAG, "onCreate: profileImage is null");
+                Log.e(TAG, "setNavigationHeader: Account is null");
         } else
             Log.e(TAG, "setNavigationHeader: Null navigation view");
     }
